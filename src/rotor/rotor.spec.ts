@@ -35,4 +35,23 @@ describe("Test Rotors", () => {
         expect(() => rotor.setRotation(0)).toThrow("INVALID ROTATION SETTING")
         expect(() => rotor.setRotation(27)).toThrow("INVALID ROTATION SETTING")
     })
+
+    it("can be rotated one step at a time", () => {
+        expect(rotor.rotation).toEqual(1)
+        rotor.rotate()
+        expect(rotor.rotation).toEqual(2)
+        rotor.rotate()
+        expect(rotor.rotation).toEqual(3)
+    })
+
+    it("rotating when rotation is set to 26 will return it back to 1", () => {
+        rotor.setRotation(26)
+        rotor.rotate()
+        expect(rotor.rotation).toEqual(1)
+    })
+
+    it("can convert rotation number to corresponding letter value", () => {
+        expect(rotor.getRotationNumber()).toEqual(1)
+        expect(rotor.getRotationLetter()).toEqual("A")
+    })
 })

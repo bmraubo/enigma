@@ -40,11 +40,27 @@ export class Rotor {
         this.turnover = turnover
     }
 
+    getRotationNumber() {
+        return this.rotation
+    }
+
+    getRotationLetter() {
+        return this.wiring.inputLetters[this.rotation - 1]
+    }
+
     setRotation(newRotation: number) {
-        if (newRotation < 26 && newRotation > 1) {
+        if (newRotation <= 26 && newRotation >= 1) {
             this.rotation = newRotation
         } else {
             throw TypeError("INVALID ROTATION SETTING ERROR")
+        }
+    }
+
+    rotate() {
+        if (this.rotation < 26) {
+            this.rotation++
+        } else if (this.rotation == 26 ) {
+            this.rotation = 1
         }
     }
 }
