@@ -16,5 +16,7 @@ describe("Test Rotors", () => {
         const rotor = new Rotor(rotorConfig)
 
         expect(rotor.wiring.getOutputFrom("A")).toEqual("E")
+        expect(rotor.wiring.getOutputFrom("D")).toEqual("F")
+        expect(rotor.wiring.getOutputFrom("Z")).toEqual("J")
     })
 })
