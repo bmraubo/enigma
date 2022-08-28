@@ -24,20 +24,17 @@ export class Wiring {
 export interface RotorConfig {
     wiring: Wiring,
     notch: string,
-    turnover: string,
 }
 
 export class Rotor {
     wiring: Wiring
     notch: string
-    turnover: string
     
     rotation = 1
 
-    constructor({ wiring, notch, turnover }: RotorConfig) {
+    constructor({ wiring, notch }: RotorConfig) {
         this.wiring = wiring
-        this.notch = notch
-        this.turnover = turnover
+        this.notch = notch.toUpperCase()
     }
 
     getRotationNumber() {
@@ -46,6 +43,10 @@ export class Rotor {
 
     getRotationLetter() {
         return this.wiring.inputLetters[this.rotation - 1]
+    }
+
+    hasHitNotch() {
+        return this.wiring.inputLetters.indexOf(this.notch) == this.rotation - 1
     }
 
     setRotation(newRotation: number) {

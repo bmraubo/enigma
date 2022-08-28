@@ -60,4 +60,8 @@ describe("Test Rotors", () => {
         expect(rotor.getRotationNumber()).toEqual(26)
         expect(rotor.getRotationLetter()).toEqual("Z")
     })
+
+    it("knows when rotation hits the notch", () => {
+        expect(rotor.hasHitNotch()).toBe(true)
+    })
 })
