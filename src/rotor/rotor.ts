@@ -9,7 +9,7 @@ export class Wiring {
     getWiringFromString(wiringString: string) {
         const wiring = new Map()
         let inputLetterIndex = 0
-        wiringString.split("").map((outcomeLetter: string) => {
+        wiringString.toUpperCase().split("").map((outcomeLetter: string) => {
             wiring.set(this.inputLetters[inputLetterIndex], outcomeLetter)
             inputLetterIndex++
         })

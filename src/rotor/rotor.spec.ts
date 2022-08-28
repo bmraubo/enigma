@@ -53,5 +53,11 @@ describe("Test Rotors", () => {
     it("can convert rotation number to corresponding letter value", () => {
         expect(rotor.getRotationNumber()).toEqual(1)
         expect(rotor.getRotationLetter()).toEqual("A")
+        rotor.setRotation(3)
+        expect(rotor.getRotationNumber()).toEqual(3)
+        expect(rotor.getRotationLetter()).toEqual("C")
+        rotor.setRotation(26)
+        expect(rotor.getRotationNumber()).toEqual(26)
+        expect(rotor.getRotationLetter()).toEqual("Z")
     })
 })
