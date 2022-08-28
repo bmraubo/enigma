@@ -18,7 +18,7 @@ export class Wiring {
 
     getOutputFrom(letter: string) {
         return this.wiring.get(letter.toUpperCase())
-    }  
+    }
 }
 
 export interface RotorConfig {
@@ -31,6 +31,8 @@ export class Rotor {
     wiring: Wiring
     notch: string
     turnover: string
+    
+    rotation = 1
 
     constructor({ wiring, notch, turnover }: RotorConfig) {
         this.wiring = wiring
@@ -38,4 +40,11 @@ export class Rotor {
         this.turnover = turnover
     }
 
+    setRotation(newRotation: number) {
+        if (newRotation < 26 && newRotation > 1) {
+            this.rotation = newRotation
+        } else {
+            throw TypeError("INVALID ROTATION SETTING ERROR")
+        }
+    }
 }
