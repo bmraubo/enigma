@@ -59,15 +59,15 @@ describe("Rotor Machine", () => {
     })
 
     it("can set the rotation of all rotors", () => {
-        expect(rotorMachine.getRotationValues()).toEqual({
+        expect(rotorMachine.getRingSettings()).toEqual({
             1: 1,
             2: 1,
             3: 1,
         })
 
-        rotorMachine.setRotationValues([23, 1, 12])
+        rotorMachine.setRingSettings([23, 1, 12])
 
-        expect(rotorMachine.getRotationValues()).toEqual({
+        expect(rotorMachine.getRingSettings()).toEqual({
             1: 23,
             2: 1,
             3: 12,

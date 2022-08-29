@@ -41,15 +41,15 @@ export class RotorMachine {
         return this.positions.get(position)
     }
 
-    getRotationValues() {
+    getRingSettings() {
         return {
-            1: this.getRotorByPosition(1)?.getRingSetting(),
-            2: this.getRotorByPosition(2)?.getRingSetting(),
-            3: this.getRotorByPosition(3)?.getRingSetting(),
+            1: this.getRotorByPosition(1)?.getRotorSetting(),
+            2: this.getRotorByPosition(2)?.getRotorSetting(),
+            3: this.getRotorByPosition(3)?.getRotorSetting(),
         }
     }
 
-    setRotationValues(rotationValues: number[]) {
+    setRingSettings(rotationValues: number[]) {
         let positionsList = [1, 2, 3]
         for (let position of positionsList) {
             this.getRotorByPosition(position)?.setRotorSetting(rotationValues[position-1])
@@ -58,6 +58,8 @@ export class RotorMachine {
 
     input(letter: string) {
         let outcome: string;
+        // rotate 1
+        // check if notch is hit, if yes, rotate 2/3
         outcome = this.getRotorByPosition(1)?.input(letter);
         outcome = this.getRotorByPosition(2)?.input(outcome);
         outcome = this.getRotorByPosition(3)?.input(outcome);

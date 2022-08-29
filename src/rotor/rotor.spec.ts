@@ -50,14 +50,14 @@ describe("Test Rotors", () => {
     })
 
     it("can convert rotation number to corresponding letter value", () => {
-        expect(rotor.getRingSetting()).toEqual(1)
-        expect(rotor.getTurnover()).toEqual("A")
+        expect(rotor.getRotorSetting()).toEqual(1)
+        expect(rotor.getRotorSettingLetterValue()).toEqual("A")
         rotor.setRotorSetting(3)
-        expect(rotor.getRingSetting()).toEqual(3)
-        expect(rotor.getTurnover()).toEqual("C")
+        expect(rotor.getRotorSetting()).toEqual(3)
+        expect(rotor.getRotorSettingLetterValue()).toEqual("C")
         rotor.setRotorSetting(26)
-        expect(rotor.getRingSetting()).toEqual(26)
-        expect(rotor.getTurnover()).toEqual("Z")
+        expect(rotor.getRotorSetting()).toEqual(26)
+        expect(rotor.getRotorSettingLetterValue()).toEqual("Z")
     })
 
     it("knows when rotation hits the notch", () => {

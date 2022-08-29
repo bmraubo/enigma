@@ -6,6 +6,14 @@ export class Wiring {
         this.wiring = this.getWiringFromString(wiringString)
     }
 
+    getInputLetterIndex(letter: string) {
+        return this.inputLetters.indexOf(letter)
+    }
+
+    getInputLetterByIndex(index: number) {
+        return this.inputLetters[index]
+    }
+
     getOutputFrom(letter: string) {
         return this.wiring.get(letter.toUpperCase()) as string
     }
@@ -39,11 +47,11 @@ export class Rotor {
         this.notch = this.prepareNotchFromInput(notch)
     }
 
-    getRingSetting() {
+    getRotorSetting() {
         return this.rotorSetting
     }
 
-    getTurnover() {
+    getRotorSettingLetterValue() {
         return this.wiring.inputLetters[this.rotorSetting - 1]
     }
 
@@ -73,7 +81,12 @@ export class Rotor {
     }
 
     input(letter: string): string {
-        return this.wiring.getOutputFrom(letter) as string
+        return this.wiring.getOutputFrom(this.adjustForRotorSetting(letter)) as string
+    }
+
+    adjustForRotorSetting(inputLetter: string) {
+        const indexOfInitialLetter = this.wiring.getInputLetterIndex(inputLetter)
+        return this.wiring.getInputLetterByIndex(indexOfInitialLetter + (this.rotorSetting - 1))
     }
 
     private prepareNotchFromInput(notch: string[]): string[] {
