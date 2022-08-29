@@ -6,7 +6,11 @@ export class Wiring {
         this.wiring = this.getWiringFromString(wiringString)
     }
 
-    getWiringFromString(wiringString: string) {
+    getOutputFrom(letter: string) {
+        return this.wiring.get(letter.toUpperCase())
+    }
+
+    private getWiringFromString(wiringString: string) {
         const wiring = new Map()
         let inputLetterIndex = 0
         wiringString.toUpperCase().split("").map((outcomeLetter: string) => {
@@ -14,10 +18,6 @@ export class Wiring {
             inputLetterIndex++
         })
         return wiring
-    }
-
-    getOutputFrom(letter: string) {
-        return this.wiring.get(letter.toUpperCase())
     }
 }
 
@@ -27,6 +27,8 @@ export interface RotorConfig {
 }
 
 export class Rotor {
+    minRotation = 1
+    maxRotation = 26
     wiring: Wiring
     notch: string[]
     
@@ -34,7 +36,7 @@ export class Rotor {
 
     constructor({ wiring, notch }: RotorConfig) {
         this.wiring = wiring
-        this.notch = notch
+        this.notch = this.prepareNotchFromInput(notch)
     }
 
     getRotationNumber() {
@@ -47,7 +49,7 @@ export class Rotor {
 
     hasHitNotch() {
         for (let notchLetter of this.notch) {
-            if (this.wiring.inputLetters.indexOf(notchLetter.toUpperCase()) == this.rotation - 1) {
+            if (this.wiring.inputLetters.indexOf(notchLetter) == this.rotation - 1) {
                 return true
             }
         }
@@ -55,7 +57,7 @@ export class Rotor {
     }
 
     setRotation(newRotation: number) {
-        if (newRotation <= 26 && newRotation >= 1) {
+        if (newRotation <= this.maxRotation && newRotation >= this.minRotation) {
             this.rotation = newRotation
         } else {
             throw TypeError("INVALID ROTATION SETTING ERROR")
@@ -63,10 +65,18 @@ export class Rotor {
     }
 
     rotate() {
-        if (this.rotation < 26) {
+        if (this.rotation < this.maxRotation) {
             this.rotation++
-        } else if (this.rotation == 26 ) {
-            this.rotation = 1
+        } else if (this.rotation == this.maxRotation ) {
+            this.rotation = this.minRotation
         }
+    }
+
+    private prepareNotchFromInput(notch: string[]): string[] {
+        const notchList: string[] = []
+        notch.map((notchLetter) => {
+            notchList.push(notchLetter.toUpperCase())
+        })
+        return notchList
     }
 }
