@@ -56,9 +56,26 @@ export class RotorMachine {
         }
     }
 
+    checkRotorNotches() {
+        let forRotation = [1]
+        for (let rotor of this.positions.values()) {
+            if (rotor.hasHitNotch()) {
+                rotor.rotate()
+            }
+        }
+        return forRotation
+    }
+
+    rotate(forRotation: number[]) {
+        for (let rotorPosition of forRotation) {
+            this.getRotorByPosition(rotorPosition)?.rotate()
+        }
+    }
+
     input(letter: string) {
         let outcome: string;
-        // rotate 1
+        let forRotation = this.checkRotorNotches()
+        this.rotate(forRotation)
         // check if notch is hit, if yes, rotate 2/3
         outcome = this.getRotorByPosition(1)?.input(letter);
         outcome = this.getRotorByPosition(2)?.input(outcome);

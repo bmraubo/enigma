@@ -8,7 +8,9 @@ describe("Rotor Machine", () => {
     let reflector: Reflector;
     let rotorMachine: RotorMachine;
 
-    // A -> B -> D -> G -> K -> N -> P -> Q
+    // Input (A) -> (rotor1: rotate 1 -> A = B -> C (notch)) -> (rotor2: do not rotate yet -> C = C -> E) -> (rotor3: E -> H) -> Reflector (H)
+    // Reflector (H -> L)
+    // Reflector (L) -> (rotor3: L -> O) -> (rotor2: O -> Q) -> (rotor1: RotorSetting = 2, Q = R, R -> S) => (output = S)
 
     beforeEach(() => {
         const rotor1Config = {
@@ -75,6 +77,7 @@ describe("Rotor Machine", () => {
     })
 
     it("takes an input which is passed through the rotors, reflected and passed through again", () => {
-        expect(rotorMachine.input("A")).toEqual("Q")
+        expect(rotorMachine.input("A")).toEqual("S")
+        expect(rotorMachine.input("A")).toEqual("U")
     })
 })
