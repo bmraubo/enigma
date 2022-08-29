@@ -32,43 +32,43 @@ export class Rotor {
     wiring: Wiring
     notch: string[]
     
-    rotation = 1
+    rotorSetting = 1
 
     constructor({ wiring, notch }: RotorConfig) {
         this.wiring = wiring
         this.notch = this.prepareNotchFromInput(notch)
     }
 
-    getRotationNumber() {
-        return this.rotation
+    getRingSetting() {
+        return this.rotorSetting
     }
 
-    getRotationLetter() {
-        return this.wiring.inputLetters[this.rotation - 1]
+    getTurnover() {
+        return this.wiring.inputLetters[this.rotorSetting - 1]
     }
 
     hasHitNotch() {
         for (let notchLetter of this.notch) {
-            if (this.wiring.inputLetters.indexOf(notchLetter) == this.rotation - 1) {
+            if (this.wiring.inputLetters.indexOf(notchLetter) == this.rotorSetting - 1) {
                 return true
             }
         }
         return false
     }
 
-    setRotation(newRotation: number) {
+    setRotorSetting(newRotation: number) {
         if (newRotation <= this.maxRotation && newRotation >= this.minRotation) {
-            this.rotation = newRotation
+            this.rotorSetting = newRotation
         } else {
             throw TypeError("INVALID ROTATION SETTING ERROR")
         }
     }
 
     rotate() {
-        if (this.rotation < this.maxRotation) {
-            this.rotation++
-        } else if (this.rotation == this.maxRotation ) {
-            this.rotation = this.minRotation
+        if (this.rotorSetting < this.maxRotation) {
+            this.rotorSetting++
+        } else if (this.rotorSetting == this.maxRotation ) {
+            this.rotorSetting = this.minRotation
         }
     }
 

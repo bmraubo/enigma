@@ -22,42 +22,42 @@ describe("Test Rotors", () => {
         expect(rotor.wiring.getOutputFrom("Z")).toEqual("J")
     })
 
-    it("can set the Rotation", () => {
-        expect(rotor.rotation).toEqual(1)
+    it("can set the RingSetting", () => {
+        expect(rotor.rotorSetting).toEqual(1)
 
-        rotor.setRotation(4)
+        rotor.setRotorSetting(4)
 
-        expect(rotor.rotation).toEqual(4)
+        expect(rotor.rotorSetting).toEqual(4)
     })
 
     it("cannot set rotation less than 1 and more than 26", () => {
-        expect(() => rotor.setRotation(0)).toThrow("INVALID ROTATION SETTING")
-        expect(() => rotor.setRotation(27)).toThrow("INVALID ROTATION SETTING")
+        expect(() => rotor.setRotorSetting(0)).toThrow("INVALID ROTATION SETTING")
+        expect(() => rotor.setRotorSetting(27)).toThrow("INVALID ROTATION SETTING")
     })
 
     it("can be rotated one step at a time", () => {
-        expect(rotor.rotation).toEqual(1)
+        expect(rotor.rotorSetting).toEqual(1)
         rotor.rotate()
-        expect(rotor.rotation).toEqual(2)
+        expect(rotor.rotorSetting).toEqual(2)
         rotor.rotate()
-        expect(rotor.rotation).toEqual(3)
+        expect(rotor.rotorSetting).toEqual(3)
     })
 
     it("rotating when rotation is set to 26 will return it back to 1", () => {
-        rotor.setRotation(26)
+        rotor.setRotorSetting(26)
         rotor.rotate()
-        expect(rotor.rotation).toEqual(1)
+        expect(rotor.rotorSetting).toEqual(1)
     })
 
     it("can convert rotation number to corresponding letter value", () => {
-        expect(rotor.getRotationNumber()).toEqual(1)
-        expect(rotor.getRotationLetter()).toEqual("A")
-        rotor.setRotation(3)
-        expect(rotor.getRotationNumber()).toEqual(3)
-        expect(rotor.getRotationLetter()).toEqual("C")
-        rotor.setRotation(26)
-        expect(rotor.getRotationNumber()).toEqual(26)
-        expect(rotor.getRotationLetter()).toEqual("Z")
+        expect(rotor.getRingSetting()).toEqual(1)
+        expect(rotor.getTurnover()).toEqual("A")
+        rotor.setRotorSetting(3)
+        expect(rotor.getRingSetting()).toEqual(3)
+        expect(rotor.getTurnover()).toEqual("C")
+        rotor.setRotorSetting(26)
+        expect(rotor.getRingSetting()).toEqual(26)
+        expect(rotor.getTurnover()).toEqual("Z")
     })
 
     it("knows when rotation hits the notch", () => {

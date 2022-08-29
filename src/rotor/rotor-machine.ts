@@ -43,16 +43,16 @@ export class RotorMachine {
 
     getRotationValues() {
         return {
-            1: this.getRotorByPosition(1)?.getRotationNumber(),
-            2: this.getRotorByPosition(2)?.getRotationNumber(),
-            3: this.getRotorByPosition(3)?.getRotationNumber(),
+            1: this.getRotorByPosition(1)?.getRingSetting(),
+            2: this.getRotorByPosition(2)?.getRingSetting(),
+            3: this.getRotorByPosition(3)?.getRingSetting(),
         }
     }
 
     setRotationValues(rotationValues: number[]) {
         let positionsList = [1, 2, 3]
         for (let position of positionsList) {
-            this.getRotorByPosition(position)?.setRotation(rotationValues[position-1])
+            this.getRotorByPosition(position)?.setRotorSetting(rotationValues[position-1])
         }
     }
 
