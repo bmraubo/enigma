@@ -82,4 +82,8 @@ describe("Test Rotors", () => {
         rotor.rotate()
         expect(rotor.hasHitNotch()).toBe(false)
     })
+
+    it("takes an input and gives encrypted output", () => {
+        expect(rotor.input("A")).toEqual("E")
+    })
 })

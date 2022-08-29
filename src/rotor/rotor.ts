@@ -7,7 +7,7 @@ export class Wiring {
     }
 
     getOutputFrom(letter: string) {
-        return this.wiring.get(letter.toUpperCase())
+        return this.wiring.get(letter.toUpperCase()) as string
     }
 
     private getWiringFromString(wiringString: string) {
@@ -70,6 +70,10 @@ export class Rotor {
         } else if (this.rotation == this.maxRotation ) {
             this.rotation = this.minRotation
         }
+    }
+
+    input(letter: string): string {
+        return this.wiring.getOutputFrom(letter) as string
     }
 
     private prepareNotchFromInput(notch: string[]): string[] {
