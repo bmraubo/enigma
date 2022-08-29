@@ -10,8 +10,7 @@ describe("Test Rotors", () => {
 
         const rotorConfig = {
             wiring: wiring,
-            notch: "a",
-            turnover: "a"
+            notch: ["a"],
         }
 
         rotor = new Rotor(rotorConfig)
@@ -63,5 +62,24 @@ describe("Test Rotors", () => {
 
     it("knows when rotation hits the notch", () => {
         expect(rotor.hasHitNotch()).toBe(true)
+    })
+
+    it("can handle multiple notches", () => {
+        const wiringString = "EKMFLGDQVZNTOWYHXUSPAIBRCJ"
+
+        const wiring = new Wiring(wiringString)
+
+        const rotorConfig = {
+            wiring: wiring,
+            notch: ["a", "b"],
+        }
+
+        rotor = new Rotor(rotorConfig)
+
+        expect(rotor.hasHitNotch()).toBe(true)
+        rotor.rotate()
+        expect(rotor.hasHitNotch()).toBe(true)
+        rotor.rotate()
+        expect(rotor.hasHitNotch()).toBe(false)
     })
 })
