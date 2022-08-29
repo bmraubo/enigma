@@ -40,43 +40,61 @@ export class Rotor {
     wiring: Wiring
     notch: string[]
     
-    rotorSetting = 1
+    // need to better understand role of rotorPosition and ringSetting
+    ringSetting = 1
+    rotation = 1
 
     constructor({ wiring, notch }: RotorConfig) {
         this.wiring = wiring
         this.notch = this.prepareNotchFromInput(notch)
     }
 
-    getRotorSetting() {
-        return this.rotorSetting
+    getRotation() {
+        return this.rotation
     }
 
-    getRotorSettingLetterValue() {
-        return this.wiring.inputLetters[this.rotorSetting - 1]
+    setRotation(newRotation: number) {
+        if (newRotation <= this.maxRotation && newRotation >= this.minRotation) {
+            this.rotation = newRotation
+        } else {
+            throw TypeError("INVALID ROTATION SETTING ERROR")
+        }
+    }
+
+    getRingSetting() {
+        return this.ringSetting
+    }
+
+    getRingSettingLetterValue() {
+        //Ring setting offsets the value of the letter but also the notch
+        return this.wiring.inputLetters[this.ringSetting - 1]
     }
 
     hasHitNotch() {
         for (let notchLetter of this.notch) {
-            if (this.wiring.inputLetters.indexOf(notchLetter) == this.rotorSetting - 1) {
+            if (this.wiring.inputLetters.indexOf(notchLetter) == this.rotation - 1) {
                 return true
             }
         }
         return false
     }
 
-    setRotorSetting(newRotation: number) {
-        if (newRotation <= this.maxRotation && newRotation >= this.minRotation) {
-            this.rotorSetting = newRotation
+    setRingSetting(newRingSetting: number) {
+        if (newRingSetting <= this.maxRotation && newRingSetting >= this.minRotation) {
+            this.ringSetting = newRingSetting
+            this.recalculateNotchFromRingSetting()
         } else {
             throw TypeError("INVALID ROTATION SETTING ERROR")
         }
     }
 
     rotate() {
-        if (this.rotorSetting < this.maxRotation) {
-            this.rotorSetting++
-        } else if (this.rotorSetting == this.maxRotation ) {
-            this.rotorSetting = this.minRotation
+        console.log("Rotating...")
+        if (this.rotation < this.maxRotation) {
+            this.rotation++
+            console.log("rotation " + this.rotation)
+        } else if (this.rotation == this.maxRotation ) {
+            this.rotation = this.minRotation
         }
     }
 
@@ -86,7 +104,7 @@ export class Rotor {
 
     adjustForRotorSetting(inputLetter: string) {
         const indexOfInitialLetter = this.wiring.getInputLetterIndex(inputLetter)
-        return this.wiring.getInputLetterByIndex(indexOfInitialLetter + (this.rotorSetting - 1))
+        return this.wiring.getInputLetterByIndex(indexOfInitialLetter + (this.rotation - 1))
     }
 
     private prepareNotchFromInput(notch: string[]): string[] {
@@ -95,5 +113,15 @@ export class Rotor {
             notchList.push(notchLetter.toUpperCase())
         })
         return notchList
+    }
+
+    private recalculateNotchFromRingSetting() {
+        const newNotch = []
+        for (let notch in this.notch) {
+            const notchOffset = this.wiring.getInputLetterIndex(notch)
+            const notchPosition = (notchOffset + this.ringSetting) > 26 ? (notchOffset + this.ringSetting - 26) : (notchOffset + this.ringSetting)
+            newNotch.push(this.wiring.getInputLetterByIndex(notchPosition))
+        }
+        this.notch = newNotch
     }
 }

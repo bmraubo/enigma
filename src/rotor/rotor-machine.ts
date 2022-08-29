@@ -43,24 +43,31 @@ export class RotorMachine {
 
     getRingSettings() {
         return {
-            1: this.getRotorByPosition(1)?.getRotorSetting(),
-            2: this.getRotorByPosition(2)?.getRotorSetting(),
-            3: this.getRotorByPosition(3)?.getRotorSetting(),
+            1: this.getRotorByPosition(1)?.getRingSetting(),
+            2: this.getRotorByPosition(2)?.getRingSetting(),
+            3: this.getRotorByPosition(3)?.getRingSetting(),
         }
     }
 
     setRingSettings(rotationValues: number[]) {
         let positionsList = [1, 2, 3]
         for (let position of positionsList) {
-            this.getRotorByPosition(position)?.setRotorSetting(rotationValues[position-1])
+            this.getRotorByPosition(position)?.setRingSetting(rotationValues[position-1])
+        }
+    }
+
+    setRotationSettings(rotationValues: number[]) {
+        let positionsList = [1, 2, 3]
+        for (let position of positionsList) {
+            this.getRotorByPosition(position)?.setRotation(rotationValues[position-1])
         }
     }
 
     checkRotorNotches() {
         let forRotation = [1]
-        for (let rotor of this.positions.values()) {
-            if (rotor.hasHitNotch()) {
-                rotor.rotate()
+        for (let position of [1, 2]) {
+            if (this.getRotorByPosition(position)?.hasHitNotch()) {
+                forRotation.push(position + 1)
             }
         }
         return forRotation
@@ -68,22 +75,32 @@ export class RotorMachine {
 
     rotate(forRotation: number[]) {
         for (let rotorPosition of forRotation) {
+            console.log("rotating " + rotorPosition)
             this.getRotorByPosition(rotorPosition)?.rotate()
         }
     }
 
     input(letter: string) {
         let outcome: string;
+        // when a key is pressed, the rotors are rotated before the circuit is made
         let forRotation = this.checkRotorNotches()
-        this.rotate(forRotation)
+        console.log(forRotation)
+        this.rotate(forRotation) // will need to account for double stepping anomaly
         // check if notch is hit, if yes, rotate 2/3
         outcome = this.getRotorByPosition(1)?.input(letter);
+        console.log("1 " + outcome)
         outcome = this.getRotorByPosition(2)?.input(outcome);
+        console.log("2 " + outcome)
         outcome = this.getRotorByPosition(3)?.input(outcome);
+        console.log("3 " + outcome)
         outcome = this.reflector.input(outcome);
+        console.log("Reflector " + outcome)
         outcome = this.getRotorByPosition(3)?.input(outcome);
+        console.log("3 " + outcome)
         outcome = this.getRotorByPosition(2)?.input(outcome);
+        console.log("2 " + outcome)
         outcome = this.getRotorByPosition(1)?.input(outcome);
+        console.log("1 " + outcome)
         return outcome
     }
 }

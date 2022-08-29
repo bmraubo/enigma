@@ -8,10 +8,6 @@ describe("Rotor Machine", () => {
     let reflector: Reflector;
     let rotorMachine: RotorMachine;
 
-    // Input (A) -> (rotor1: rotate 1 -> A = B -> C (notch)) -> (rotor2: do not rotate yet -> C = C -> E) -> (rotor3: E -> H) -> Reflector (H)
-    // Reflector (H -> L)
-    // Reflector (L) -> (rotor3: L -> O) -> (rotor2: O -> Q) -> (rotor1: RotorSetting = 2, Q = R, R -> S) => (output = S)
-
     beforeEach(() => {
         const rotor1Config = {
             wiring: new Wiring("BCDEFGHIJKLMNOPQRSTUVWXYZA"),
@@ -79,5 +75,50 @@ describe("Rotor Machine", () => {
     it("takes an input which is passed through the rotors, reflected and passed through again", () => {
         expect(rotorMachine.input("A")).toEqual("S")
         expect(rotorMachine.input("A")).toEqual("U")
+        expect(rotorMachine.input("A")).toEqual("Y")
+
+    })
+
+    describe("Real Enigma Test", () => {
+        
+        let rotorIConfig = {
+            wiring: new Wiring("EKMFLGDQVZNTOWYHXUSPAIBRCJ"),
+            notch: ["Y"],
+        }
+        let rotorI = new Rotor(rotorIConfig)
+
+        let rotorIIConfig = {
+            wiring: new Wiring("AJDKSIRUXBLHWTMCQGZNPYFVOE"),
+            notch: ["M"],
+        }
+        let rotorII = new Rotor(rotorIIConfig)
+
+        let rotorIIIConfig = {
+            wiring: new Wiring("BDFHJLCPRTXVZNYEIWGAKMUSQO"),
+            notch: ["D"],
+        }
+        let rotorIII = new Rotor(rotorIIIConfig)
+
+        let realPositions = new Map()
+        realPositions.set(1, rotorI)
+        realPositions.set(2, rotorII)
+        realPositions.set(3, rotorIII)
+
+        let realReflector = new Reflector("YRUHQSLDPXNGOKMIEBFZCWVJAT")
+
+        let realMachineConfig = {
+            positions: realPositions,
+            reflector: realReflector,
+        }
+
+        let realMachine = new RotorMachine(realMachineConfig)
+
+        it("returns EWTYX when input is AAAAA", () => {
+            expect(realMachine.input("A")).toEqual("B")
+            expect(realMachine.input("A")).toEqual("D")
+            expect(realMachine.input("A")).toEqual("Z")
+            expect(realMachine.input("A")).toEqual("G")
+            expect(realMachine.input("A")).toEqual("O")
+        })
     })
 })
