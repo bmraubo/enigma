@@ -11,7 +11,6 @@ export class Reflector {
 
   input(inputLetter: string): string {
     const output = this.wiring.get(inputLetter) as string;
-    console.log("Reflector: " + inputLetter + "=>" + output);
     return output;
   }
 
@@ -83,7 +82,6 @@ export class RotorMachine {
 
   rotate(forRotation: number[]) {
     for (let rotorPosition of forRotation) {
-      console.log("rotating " + rotorPosition);
       this.getRotorByPosition(rotorPosition)?.rotate();
     }
   }
@@ -91,7 +89,6 @@ export class RotorMachine {
   input(letter: string) {
     let outcome: string;
     let forRotation = this.checkRotorNotches();
-    console.log(forRotation);
     this.rotate(forRotation); // will need to account for double stepping anomaly
     outcome = this.passLetterThroughRotors(letter, CurrentDirection.FORWARD);
     outcome = this.reflector.input(outcome);
