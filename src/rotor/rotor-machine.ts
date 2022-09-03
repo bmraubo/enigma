@@ -82,32 +82,17 @@ export class RotorMachine {
         }
     }
 
-    adjustInputForRotationOfPreviousRotor(input: string, previousRotor: Rotor) {
-        const inputLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        const adjustedInput = inputLetters[inputLetters.indexOf(input) - previousRotor.step + 1]
-        console.log("AdjustedInput: " + adjustedInput)
-        return adjustedInput
-    }
-
     input(letter: string) {
         let outcome: string;
-        // when a key is pressed, the rotors are rotated before the circuit is made
         let forRotation = this.checkRotorNotches()
         console.log(forRotation)
         this.rotate(forRotation) // will need to account for double stepping anomaly
-        // check if notch is hit, if yes, rotate 2/3
-        console.log("1 - unadjusted input: " + letter)
         outcome = this.getRotorByPosition(3)?.input(letter, CurrentDirection.FORWARD)!;
-        console.log("2 - unadjusted input: " + outcome)
         outcome = this.getRotorByPosition(2)?.input(outcome, CurrentDirection.FORWARD)!;
-        console.log("3 - unadjusted input: " + outcome)
         outcome = this.getRotorByPosition(1)?.input(outcome, CurrentDirection.FORWARD)!;
         outcome = this.reflector.input(outcome);
-        console.log("3 - unadjusted input: " + outcome)
         outcome = this.getRotorByPosition(1)?.input(outcome, CurrentDirection.REVERSE)!;
-        console.log("2 - unadjusted input: " + outcome)
         outcome = this.getRotorByPosition(2)?.input(outcome, CurrentDirection.REVERSE)!;
-        console.log("1 - unadjusted input: " + outcome)
         outcome = this.getRotorByPosition(3)?.input(outcome, CurrentDirection.REVERSE)!;
         return outcome
     }

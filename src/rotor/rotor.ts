@@ -12,7 +12,6 @@ export class Wiring {
 
     constructor(wiringString: string) {
         this.wiring = this.connectWiring(wiringString)
-        console.log(this.wiring)
     }
 
     getInputLetterIndex(letter: string) {
@@ -20,10 +19,14 @@ export class Wiring {
     }
 
     getInputLetterByIndex(index: number) {
-        if (index >= 0 && index <= 26) {
+        if (index >= 0 && index <= 25) {
             return this.inputLetters[index]
-        } else {
+        }
+        if (index < 0) {
             return this.inputLetters[index + 26]
+        } 
+        if (index > 25) {
+            return this.inputLetters[index - 26]
         }
 
     }
@@ -98,6 +101,10 @@ export class Rotor {
         return this.step
     }
 
+    hasHitNotch() {
+        return this.notchOffset.includes(this.step + this.ringSetting - 1)
+    }
+
     rotate() {
         if (this.possibleRotorSetting(this.step + 1)) {
             this.step++
@@ -107,40 +114,35 @@ export class Rotor {
         
     }
 
-    hasHitNotch() {
-        return this.notchOffset.includes(this.step + this.ringSetting - 1)
+    input(letter: string, direction: CurrentDirection) {
+        let output = this.adjustOutputForStep(this.wiring.getOutputFrom(this.adjustInputForStep(letter, direction)!, direction), direction)
+        return output
     }
 
-    adjustInputForStep(input: string, direction: CurrentDirection) {
+    private adjustInputForStep(input: string, direction: CurrentDirection) {
         let adjustedInput;
         if (direction == "forward") {
-            console.log(this.step - 1)
-            adjustedInput = this.wiring.getInputLetterByIndex(this.wiring.getInputLetterIndex(input) + (this.step - 1))
+            adjustedInput = this.wiring.getInputLetterByIndex(this.wiring.getInputLetterIndex(input) + this.stepToIndex())
         }
         if (direction == "reverse") {
-            adjustedInput = this.wiring.getInputLetterByIndex(this.wiring.getInputLetterIndex(input) + (this.step - 1))
+            adjustedInput = this.wiring.getInputLetterByIndex(this.wiring.getInputLetterIndex(input) + this.stepToIndex())
         }
         
-        console.log(`Adjusted Input: ${input} -> ${adjustedInput}`)
         return adjustedInput
     }
 
-    adjustOutputForStep(output: string, direction: CurrentDirection) {
+    private adjustOutputForStep(output: string, direction: CurrentDirection) {
         let adjustedInput;
         if (direction == "forward") {
-            adjustedInput = this.wiring.getInputLetterByIndex(this.wiring.getInputLetterIndex(output) - (this.step - 1))
+            adjustedInput = this.wiring.getInputLetterByIndex(this.wiring.getInputLetterIndex(output) - this.stepToIndex())
         }
         if (direction == "reverse") {
-            adjustedInput = this.wiring.getInputLetterByIndex(this.wiring.getInputLetterIndex(output) - (this.step - 1))
+            adjustedInput = this.wiring.getInputLetterByIndex(this.wiring.getInputLetterIndex(output) - this.stepToIndex())
         }
-        console.log(`Adjusted Output: ${output} -> ${adjustedInput}`)
         return adjustedInput
     }
 
-    input(letter: string, direction: CurrentDirection) {
-        console.log("input: " + letter)
-        let output = this.adjustOutputForStep(this.wiring.getOutputFrom(this.adjustInputForStep(letter, direction)!, direction), direction)
-        console.log("output: " + output)
-        return output
+    private stepToIndex() {
+        return this.step - 1
     }
 }

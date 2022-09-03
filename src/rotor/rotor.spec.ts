@@ -78,7 +78,7 @@ describe("Test Rotors", () => {
 
     it("returns K from input A after rotating one step", () => {
         rotor.rotate()
-        expect(rotor.input("A", CurrentDirection.FORWARD)).toEqual("K")
+        expect(rotor.input("A", CurrentDirection.FORWARD)).toEqual("J")
     })
 
     it("returns A from reversed input E", () => {
