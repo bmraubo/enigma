@@ -67,7 +67,7 @@ export class RotorMachine {
 
     checkRotorNotches() {
         let forRotation = [3]
-        for (let position of [2, 1]) {
+        for (let position of [3, 2, 1]) {
             if (this.getRotorByPosition(position)?.hasHitNotch()) {
                 forRotation.push(position + 1)
             }
@@ -87,13 +87,18 @@ export class RotorMachine {
         let forRotation = this.checkRotorNotches()
         console.log(forRotation)
         this.rotate(forRotation) // will need to account for double stepping anomaly
-        outcome = this.getRotorByPosition(3)?.input(letter, CurrentDirection.FORWARD)!;
-        outcome = this.getRotorByPosition(2)?.input(outcome, CurrentDirection.FORWARD)!;
-        outcome = this.getRotorByPosition(1)?.input(outcome, CurrentDirection.FORWARD)!;
+        outcome = this.passLetterThroughRotors(letter, CurrentDirection.FORWARD)
         outcome = this.reflector.input(outcome);
-        outcome = this.getRotorByPosition(1)?.input(outcome, CurrentDirection.REVERSE)!;
-        outcome = this.getRotorByPosition(2)?.input(outcome, CurrentDirection.REVERSE)!;
-        outcome = this.getRotorByPosition(3)?.input(outcome, CurrentDirection.REVERSE)!;
+        outcome = this.passLetterThroughRotors(outcome, CurrentDirection.REVERSE)
+        return outcome
+    }
+
+    private passLetterThroughRotors(letter: string, direction: CurrentDirection) {
+        const rotorOrder = direction == "forward" ? [3, 2, 1] : [1, 2, 3]
+        let outcome = letter;
+        for (let rotor of rotorOrder) {
+            outcome = this.getRotorByPosition(rotor)?.input(outcome, direction)!;
+        }
         return outcome
     }
 }
