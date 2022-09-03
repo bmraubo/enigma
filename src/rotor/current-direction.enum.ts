@@ -1,4 +1,4 @@
 export enum CurrentDirection {
-    FORWARD = "forward",
-    REVERSE = "reverse"
+  FORWARD = "forward",
+  REVERSE = "reverse",
 }
