@@ -1,4 +1,6 @@
-import { CurrentDirection, Rotor, Wiring } from "./rotor";
+import { CurrentDirection } from "./current-direction.enum";
+import { Rotor } from "./rotor";
+import { Wiring } from "./wiring";
 
 describe("Test Rotors", () => {
     let rotor: Rotor

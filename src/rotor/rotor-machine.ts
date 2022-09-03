@@ -1,4 +1,5 @@
-import { CurrentDirection, Rotor } from "./rotor"
+import { CurrentDirection } from "./current-direction.enum";
+import { Rotor } from "./rotor"
 
 export class Reflector {
     inputLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

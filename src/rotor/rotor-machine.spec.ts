@@ -1,5 +1,6 @@
-import { Rotor, Wiring } from "./rotor"
+import { Rotor } from "./rotor"
 import { Reflector, RotorMachine } from "./rotor-machine"
+import { Wiring } from "./wiring";
 
 describe("Rotor Machine", () => {
     let rotor1: Rotor;
@@ -155,43 +156,3 @@ describe("Rotor Machine", () => {
         })
     })
 })
-
-/*
-Rotation: 1
-
-ABCDEFGHIJKLMNOPQRSTUVWXYZ <- Entry Disk
-
-ABCDEFGHIJKLMNOPQRSTUVWXYZ + 1
-EKMFLGDQVZNTOWYHXUSPAIBRCJ - First Pass: A -> B -> K Second Pass: D -> G -> F
-ABCDEFGHIJKLMNOPQRSTUVWXYZ
-
-ABCDEFGHIJKLMNOPQRSTUVWXYZ - 1
-AJDKSIRUXBLHWTMCQGZNPYFVOE - First Pass: K -> J -> B Second Pass: D -> C -> D
-
-ABCDEFGHIJKLMNOPQRSTUVWXYZ
-BDFHJLCPRTXVZNYEIWGAKMUSQO - First Pass: B -> D Second Pass: H -> D
-
-ABCDEFGHIJKLMNOPQRSTUVWXYZ
-YRUHQSLDPXNGOKMIEBFZCWVJAT - Reflector: D -> H
-
-Should be: A -> (B) -> BK -> (J) -> JB -> BD -> [DH] -> HD -> DC -> (D) -> DF
-
-Rotation: 2
-
-   ABCDEFGHIJKLMNOPQRSTUVWXYZ <- Entry Disk
-
-  ABCDEFGHIJKLMNOPQRSTUVWXYZ
-ABCDEFGHIJKLMNOPQRSTUVWXYZ 
-EKMFLGDQVZNTOWYHXUSPAIBRCJ - First Pass: A -> C -> M Second Pass: F -> C
-
-  ABCDEFGHIJKLMNOPQRSTUVWXYZ
-ABCDEFGHIJKLMNOPQRSTUVWXYZ <- adjusted due to rotation
-AJDKSIRUXBLHWTMCQGZNPYFVOE - First Pass: M -> O -> M Second Pass: J -> B -> Z
-
-ABCDEFGHIJKLMNOPQRSTUVWXYZ
-BDFHJLCPRTXVZNYEIWGAKMUSQO - First Pass: M -> Z Second Pass: T -> J
-
-ABCDEFGHIJKLMNOPQRSTUVWXYZ
-YRUHQSLDPXNGOKMIEBFZCWVJAT - Reflector: Z -> T
-
-*/
