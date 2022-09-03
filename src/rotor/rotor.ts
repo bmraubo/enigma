@@ -12,7 +12,6 @@ export class Rotor {
 
     ringSetting = 1
     step = 1
-    testOffset = 1
 
     constructor({ wiring, notchOffset }: RotorConfig) {
         this.wiring = wiring
