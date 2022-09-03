@@ -106,40 +106,19 @@ export class Rotor {
     }
 
     rotate() {
-        if (this.possibleRotorSetting(this.step + 1)) {
-            this.step++
-        } else {
-            this.step = 1
-        }
-        
+        this.possibleRotorSetting(this.step + 1) ? this.step++ : this.step = 1
     }
 
     input(letter: string, direction: CurrentDirection) {
-        let output = this.adjustOutputForStep(this.wiring.getOutputFrom(this.adjustInputForStep(letter, direction)!, direction), direction)
-        return output
+        return this.adjustOutputForStep(this.wiring.getOutputFrom(this.adjustInputForStep(letter, direction)!, direction), direction)
     }
 
     private adjustInputForStep(input: string, direction: CurrentDirection) {
-        let adjustedInput;
-        if (direction == "forward") {
-            adjustedInput = this.wiring.getInputLetterByIndex(this.wiring.getInputLetterIndex(input) + this.stepToIndex())
-        }
-        if (direction == "reverse") {
-            adjustedInput = this.wiring.getInputLetterByIndex(this.wiring.getInputLetterIndex(input) + this.stepToIndex())
-        }
-        
-        return adjustedInput
+        return this.wiring.getInputLetterByIndex(this.wiring.getInputLetterIndex(input) + this.stepToIndex())
     }
 
     private adjustOutputForStep(output: string, direction: CurrentDirection) {
-        let adjustedInput;
-        if (direction == "forward") {
-            adjustedInput = this.wiring.getInputLetterByIndex(this.wiring.getInputLetterIndex(output) - this.stepToIndex())
-        }
-        if (direction == "reverse") {
-            adjustedInput = this.wiring.getInputLetterByIndex(this.wiring.getInputLetterIndex(output) - this.stepToIndex())
-        }
-        return adjustedInput
+        return this.wiring.getInputLetterByIndex(this.wiring.getInputLetterIndex(output) - this.stepToIndex())
     }
 
     private stepToIndex() {
