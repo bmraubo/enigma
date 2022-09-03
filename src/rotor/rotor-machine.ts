@@ -70,22 +70,6 @@ export class RotorMachine {
     }
   }
 
-  checkRotorNotches() {
-    let forRotation = [3];
-    for (let position of [3, 2, 1]) {
-      if (this.getRotorByPosition(position)?.hasHitNotch()) {
-        forRotation.push(position + 1);
-      }
-    }
-    return forRotation;
-  }
-
-  rotate(forRotation: number[]) {
-    for (let rotorPosition of forRotation) {
-      this.getRotorByPosition(rotorPosition)?.rotate();
-    }
-  }
-
   input(letter: string) {
     let outcome: string;
     let forRotation = this.checkRotorNotches();
@@ -103,5 +87,21 @@ export class RotorMachine {
       outcome = this.getRotorByPosition(rotor)?.input(outcome, direction)!;
     }
     return outcome;
+  }
+
+  private rotate(forRotation: number[]) {
+    for (let rotorPosition of forRotation) {
+      this.getRotorByPosition(rotorPosition)?.rotate();
+    }
+  }
+
+  private checkRotorNotches() {
+    let forRotation = [3];
+    for (let position of [3, 2, 1]) {
+      if (this.getRotorByPosition(position)?.hasHitNotch()) {
+        forRotation.push(position + 1);
+      }
+    }
+    return forRotation;
   }
 }

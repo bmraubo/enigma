@@ -57,13 +57,11 @@ export class Rotor {
   }
 
   input(letter: string, direction: CurrentDirection) {
-    return this.adjustOutputForStep(
-      this.wiring.getOutputFrom(
-        this.adjustInputForStep(letter, direction)!,
-        direction
-      ),
+    const unadjustedOutput = this.wiring.getOutputFrom(
+      this.adjustInputForStep(letter, direction)!,
       direction
     );
+    return this.adjustOutputForStep(unadjustedOutput, direction);
   }
 
   private adjustInputForStep(input: string, direction: CurrentDirection) {
