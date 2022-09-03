@@ -80,4 +80,8 @@ describe("Test Rotors", () => {
         rotor.rotate()
         expect(rotor.input("A", CurrentDirection.FORWARD)).toEqual("K")
     })
+
+    it("returns A from reversed input E", () => {
+        expect(rotor.input("E", CurrentDirection.REVERSE)).toEqual("A")
+    })
 })

@@ -1,4 +1,4 @@
-import { Rotor, Wiring } from "./rotor"
+import { CurrentDirection, Rotor } from "./rotor"
 
 export class Reflector {
     inputLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -9,7 +9,9 @@ export class Reflector {
     }
 
     input(inputLetter: string): string {
-        return String(this.wiring.get(inputLetter)) as string
+        const output = this.wiring.get(inputLetter) as string
+        console.log("Reflector: " + inputLetter + "=>" + output)
+        return output
     }
 
     private getWiringFromString(wiringString: string) {
@@ -56,16 +58,16 @@ export class RotorMachine {
         }
     }
 
-    setRotationSettings(rotationValues: number[]) {
+    setStartingPositions(rotationValues: number[]) {
         let positionsList = [1, 2, 3]
         for (let position of positionsList) {
-            this.getRotorByPosition(position)?.setRotation(rotationValues[position-1])
+            this.getRotorByPosition(position)?.setStep(rotationValues[position-1])
         }
     }
 
     checkRotorNotches() {
-        let forRotation = [1]
-        for (let position of [1, 2]) {
+        let forRotation = [3]
+        for (let position of [2, 1]) {
             if (this.getRotorByPosition(position)?.hasHitNotch()) {
                 forRotation.push(position + 1)
             }
@@ -80,6 +82,13 @@ export class RotorMachine {
         }
     }
 
+    adjustInputForRotationOfPreviousRotor(input: string, previousRotor: Rotor) {
+        const inputLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        const adjustedInput = inputLetters[inputLetters.indexOf(input) - previousRotor.step + 1]
+        console.log("AdjustedInput: " + adjustedInput)
+        return adjustedInput
+    }
+
     input(letter: string) {
         let outcome: string;
         // when a key is pressed, the rotors are rotated before the circuit is made
@@ -87,20 +96,19 @@ export class RotorMachine {
         console.log(forRotation)
         this.rotate(forRotation) // will need to account for double stepping anomaly
         // check if notch is hit, if yes, rotate 2/3
-        outcome = this.getRotorByPosition(1)?.input(letter);
-        console.log("1 " + outcome)
-        outcome = this.getRotorByPosition(2)?.input(outcome);
-        console.log("2 " + outcome)
-        outcome = this.getRotorByPosition(3)?.input(outcome);
-        console.log("3 " + outcome)
+        console.log("1 - unadjusted input: " + letter)
+        outcome = this.getRotorByPosition(3)?.input(letter, CurrentDirection.FORWARD)!;
+        console.log("2 - unadjusted input: " + outcome)
+        outcome = this.getRotorByPosition(2)?.input(outcome, CurrentDirection.FORWARD)!;
+        console.log("3 - unadjusted input: " + outcome)
+        outcome = this.getRotorByPosition(1)?.input(outcome, CurrentDirection.FORWARD)!;
         outcome = this.reflector.input(outcome);
-        console.log("Reflector " + outcome)
-        outcome = this.getRotorByPosition(3)?.input(outcome);
-        console.log("3 " + outcome)
-        outcome = this.getRotorByPosition(2)?.input(outcome);
-        console.log("2 " + outcome)
-        outcome = this.getRotorByPosition(1)?.input(outcome);
-        console.log("1 " + outcome)
+        console.log("3 - unadjusted input: " + outcome)
+        outcome = this.getRotorByPosition(1)?.input(outcome, CurrentDirection.REVERSE)!;
+        console.log("2 - unadjusted input: " + outcome)
+        outcome = this.getRotorByPosition(2)?.input(outcome, CurrentDirection.REVERSE)!;
+        console.log("1 - unadjusted input: " + outcome)
+        outcome = this.getRotorByPosition(3)?.input(outcome, CurrentDirection.REVERSE)!;
         return outcome
     }
 }

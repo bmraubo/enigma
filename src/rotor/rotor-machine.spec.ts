@@ -11,19 +11,19 @@ describe("Rotor Machine", () => {
     beforeEach(() => {
         const rotor1Config = {
             wiring: new Wiring("BCDEFGHIJKLMNOPQRSTUVWXYZA"),
-            notch: ["C"]
+            notchOffset: [3]
         }
         rotor1 = new Rotor(rotor1Config)
 
         const rotor2Config = {
             wiring: new Wiring("CDEFGHIJKLMNOPQRSTUVWXYZAB"),
-            notch: ["D"]
+            notchOffset: [4]
         }
         rotor2 = new Rotor(rotor2Config)
 
         const rotor3Config = {
             wiring: new Wiring("DEFGHIJKLMNOPQRSTUVWXYZABC"),
-            notch: ["E"]
+            notchOffset: [5]
         }
         rotor3 = new Rotor(rotor3Config)
 
@@ -72,37 +72,30 @@ describe("Rotor Machine", () => {
         })
     })
 
-    it("takes an input which is passed through the rotors, reflected and passed through again", () => {
-        expect(rotorMachine.input("A")).toEqual("S")
-        expect(rotorMachine.input("A")).toEqual("U")
-        expect(rotorMachine.input("A")).toEqual("Y")
-
-    })
-
     describe("Real Enigma Test", () => {
         
         let rotorIConfig = {
             wiring: new Wiring("EKMFLGDQVZNTOWYHXUSPAIBRCJ"),
-            notch: ["Y"],
+            notchOffset: [25],
         }
         let rotorI = new Rotor(rotorIConfig)
 
         let rotorIIConfig = {
             wiring: new Wiring("AJDKSIRUXBLHWTMCQGZNPYFVOE"),
-            notch: ["M"],
+            notchOffset: [14],
         }
         let rotorII = new Rotor(rotorIIConfig)
 
         let rotorIIIConfig = {
             wiring: new Wiring("BDFHJLCPRTXVZNYEIWGAKMUSQO"),
-            notch: ["D"],
+            notchOffset: [4],
         }
         let rotorIII = new Rotor(rotorIIIConfig)
 
         let realPositions = new Map()
-        realPositions.set(1, rotorI)
+        realPositions.set(1, rotorIII)
         realPositions.set(2, rotorII)
-        realPositions.set(3, rotorIII)
+        realPositions.set(3, rotorI)
 
         let realReflector = new Reflector("YRUHQSLDPXNGOKMIEBFZCWVJAT")
 
@@ -114,11 +107,51 @@ describe("Rotor Machine", () => {
         let realMachine = new RotorMachine(realMachineConfig)
 
         it("returns EWTYX when input is AAAAA", () => {
-            expect(realMachine.input("A")).toEqual("B")
-            expect(realMachine.input("A")).toEqual("D")
+            expect(realMachine.input("A")).toEqual("F")
+            expect(realMachine.input("A")).toEqual("T")
             expect(realMachine.input("A")).toEqual("Z")
+            expect(realMachine.input("A")).toEqual("M")
             expect(realMachine.input("A")).toEqual("G")
-            expect(realMachine.input("A")).toEqual("O")
         })
     })
 })
+
+/*
+Rotation: 1
+
+ABCDEFGHIJKLMNOPQRSTUVWXYZ <- Entry Disk
+
+ABCDEFGHIJKLMNOPQRSTUVWXYZ + 1
+EKMFLGDQVZNTOWYHXUSPAIBRCJ - First Pass: A -> B -> K Second Pass: D -> G -> F
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+
+ABCDEFGHIJKLMNOPQRSTUVWXYZ - 1
+AJDKSIRUXBLHWTMCQGZNPYFVOE - First Pass: K -> J -> B Second Pass: D -> C -> D
+
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+BDFHJLCPRTXVZNYEIWGAKMUSQO - First Pass: B -> D Second Pass: H -> D
+
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+YRUHQSLDPXNGOKMIEBFZCWVJAT - Reflector: D -> H
+
+Should be: A -> (B) -> BK -> (J) -> JB -> BD -> [DH] -> HD -> DC -> (D) -> DF
+
+Rotation: 2
+
+   ABCDEFGHIJKLMNOPQRSTUVWXYZ <- Entry Disk
+
+  ABCDEFGHIJKLMNOPQRSTUVWXYZ
+ABCDEFGHIJKLMNOPQRSTUVWXYZ 
+EKMFLGDQVZNTOWYHXUSPAIBRCJ - First Pass: A -> C -> M Second Pass: F -> C
+
+  ABCDEFGHIJKLMNOPQRSTUVWXYZ
+ABCDEFGHIJKLMNOPQRSTUVWXYZ <- adjusted due to rotation
+AJDKSIRUXBLHWTMCQGZNPYFVOE - First Pass: M -> O -> M Second Pass: J -> B -> Z
+
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+BDFHJLCPRTXVZNYEIWGAKMUSQO - First Pass: M -> Z Second Pass: T -> J
+
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+YRUHQSLDPXNGOKMIEBFZCWVJAT - Reflector: Z -> T
+
+*/
