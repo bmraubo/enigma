@@ -9,8 +9,8 @@ describe("Test Reflector", () => {
     })
 
     it("generates wiring based on input string", () => {
-        expect(reflector.wiring.get("A")).toEqual("B")
-        expect(reflector.wiring.get("Z")).toEqual("A")
-        expect(reflector.wiring.get("B")).toEqual("C")
+        expect(reflector.input("A")).toEqual("B")
+        expect(reflector.input("Z")).toEqual("A")
+        expect(reflector.input("B")).toEqual("C")
     })
 })
