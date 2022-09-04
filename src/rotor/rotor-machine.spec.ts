@@ -75,7 +75,7 @@ describe("Rotor Machine", () => {
   });
 
   describe("Real Enigma Test", () => {
-    it("returns EWTYX from AAAAA when ringSettings are [1,1,1], starting position is [1,1,1], rotorPositions are [III,II,I]", () => {
+    it("returns EWTYX from AAAAA when ringSettings are [0,0,0], starting position is [1,1,1], rotorPositions are [III,II,I]", () => {
       let rotorIConfig = {
         wiring: new Wiring("EKMFLGDQVZNTOWYHXUSPAIBRCJ"),
         notchOffset: [25],
@@ -115,7 +115,7 @@ describe("Rotor Machine", () => {
       expect(realMachine.input("A")).toEqual("G");
     });
 
-    it("returns BDZOG from AAAAA when ringSettings are [1,1,1], starting position is [1,1,1], rotorPositions are [I,II,III]", () => {
+    it("returns BDZOG from AAAAA when ringSettings are [0,0,0], starting position is [1,1,1], rotorPositions are [I,II,III]", () => {
       let rotorIConfig = {
         wiring: new Wiring("EKMFLGDQVZNTOWYHXUSPAIBRCJ"),
         notchOffset: [25],
@@ -154,5 +154,47 @@ describe("Rotor Machine", () => {
       expect(realMachine.input("A")).toEqual("G");
       expect(realMachine.input("A")).toEqual("O");
     });
+
+    it("returns UBDZG from AAAAA when ringSettings are [0,0,1], starting position is [1,1,1], rotorPositions are [I,II,III]", () => {
+        let rotorIConfig = {
+            wiring: new Wiring("EKMFLGDQVZNTOWYHXUSPAIBRCJ"),
+            notchOffset: [25],
+          };
+          let rotorI = new Rotor(rotorIConfig);
+    
+          let rotorIIConfig = {
+            wiring: new Wiring("AJDKSIRUXBLHWTMCQGZNPYFVOE"),
+            notchOffset: [14],
+          };
+          let rotorII = new Rotor(rotorIIConfig);
+    
+          let rotorIIIConfig = {
+            wiring: new Wiring("BDFHJLCPRTXVZNYEIWGAKMUSQO"),
+            notchOffset: [4],
+          };
+          let rotorIII = new Rotor(rotorIIIConfig);
+    
+          let realPositions = new Map();
+          realPositions.set(1, rotorI);
+          realPositions.set(2, rotorII);
+          realPositions.set(3, rotorIII);
+    
+          let realReflector = new Reflector("YRUHQSLDPXNGOKMIEBFZCWVJAT");
+    
+          let realMachineConfig = {
+            positions: realPositions,
+            reflector: realReflector,
+          };
+    
+          let realMachine = new RotorMachine(realMachineConfig);
+
+          realMachine.setRingSettings([1, 1, 2])
+    
+          expect(realMachine.input("A")).toEqual("U");
+          expect(realMachine.input("A")).toEqual("B");
+          expect(realMachine.input("A")).toEqual("D");
+          expect(realMachine.input("A")).toEqual("Z");
+          expect(realMachine.input("A")).toEqual("G");
+    })
   });
 });

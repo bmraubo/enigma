@@ -38,7 +38,7 @@ describe("Test Rotors", () => {
     expect(rotor.ringSetting).toEqual(4);
   });
 
-  it("cannot set rotation less than 1 and more than 26", () => {
+  it("cannot set step less than 1 and more than 26", () => {
     expect(() => rotor.setRingSetting(0)).toThrow("INVALID ROTATION SETTING");
     expect(() => rotor.setRingSetting(27)).toThrow("INVALID ROTATION SETTING");
   });
@@ -51,13 +51,13 @@ describe("Test Rotors", () => {
     expect(rotor.getStep()).toEqual(3);
   });
 
-  it("rotating when rotation is set to 26 will return it back to 1", () => {
+  it("rotating when step is set to 26 will return it back to 1", () => {
     rotor.setStep(26);
     rotor.rotate();
     expect(rotor.getStep()).toEqual(1);
   });
 
-  it("knows when rotation hits the notch", () => {
+  it("knows when step hits the notch", () => {
     expect(rotor.hasHitNotch()).toBe(true);
   });
 

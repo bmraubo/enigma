@@ -27,6 +27,7 @@ export class Rotor {
   setRingSetting(setting: number) {
     if (this.possibleRotorSetting(setting)) {
       this.ringSetting = setting;
+      this.wiring.applyRingSetting(this.ringSetting)
     } else {
       throw TypeError("INVALID ROTATION SETTING ERROR");
     }
@@ -61,6 +62,8 @@ export class Rotor {
       this.adjustInputForStep(letter)!,
       direction
     );
+    console.log(`Input ${letter}, output: ${this.adjustOutputForStep(unadjustedOutput)}`)
+
     return this.adjustOutputForStep(unadjustedOutput);
   }
 
