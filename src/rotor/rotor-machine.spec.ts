@@ -1,5 +1,6 @@
+import { Reflector } from "./reflector";
 import { Rotor } from "./rotor";
-import { Reflector, RotorMachine } from "./rotor-machine";
+import { RotorMachine } from "./rotor-machine";
 import { Wiring } from "./wiring";
 
 describe("Rotor Machine", () => {
