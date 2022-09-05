@@ -31,7 +31,7 @@ describe("Test Rotors", () => {
   });
 
   it("can set the RingSetting", () => {
-    expect(rotor.ringSetting).toEqual(1);
+    expect(rotor.ringSetting).toEqual(0);
 
     rotor.setRingSetting(4);
 
@@ -39,25 +39,27 @@ describe("Test Rotors", () => {
   });
 
   it("cannot set step less than 1 and more than 26", () => {
-    expect(() => rotor.setRingSetting(0)).toThrow("INVALID ROTATION SETTING");
+    expect(() => rotor.setRingSetting(-1)).toThrow("INVALID ROTATION SETTING");
     expect(() => rotor.setRingSetting(27)).toThrow("INVALID ROTATION SETTING");
   });
 
   it("can be rotated one step at a time", () => {
+    expect(rotor.getStep()).toEqual(0);
+    rotor.rotate();
     expect(rotor.getStep()).toEqual(1);
     rotor.rotate();
     expect(rotor.getStep()).toEqual(2);
-    rotor.rotate();
-    expect(rotor.getStep()).toEqual(3);
   });
 
-  it("rotating when step is set to 26 will return it back to 1", () => {
-    rotor.setStep(26);
+  it("rotating when step is set to 25 will return it back to 1", () => {
+    rotor.setStep(25);
     rotor.rotate();
-    expect(rotor.getStep()).toEqual(1);
+    expect(rotor.getStep()).toEqual(0);
   });
 
   it("knows when step hits the notch", () => {
+    expect(rotor.hasHitNotch()).toBe(false);
+    rotor.rotate()
     expect(rotor.hasHitNotch()).toBe(true);
   });
 
@@ -68,7 +70,7 @@ describe("Test Rotors", () => {
 
     const rotorConfig = {
       wiring: wiring,
-      notchOffset: [1, 2],
+      notchOffset: [0, 1],
     };
 
     rotor = new Rotor(rotorConfig);

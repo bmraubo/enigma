@@ -2,14 +2,14 @@ import { CurrentDirection } from "./current-direction.enum";
 
 export class Wiring {
   inputLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  wiringString: string;
+  defaultWiringString: string;
   wiring: {
     forward: Map<string, string>;
     reverse: Map<string, string>;
   };
 
   constructor(wiringString: string) {
-    this.wiringString = wiringString
+    this.defaultWiringString = wiringString
     this.wiring = this.connectWiring(wiringString);
   }
 
@@ -18,13 +18,19 @@ export class Wiring {
   }
 
   getInputLetterByIndex(index: number) {
+    console.log("input index: " + index)
     if (index >= 0 && index <= 25) {
+      console.log("between 0 and 25")
       return this.inputLetters[index];
     }
     if (index < 0) {
+      console.log(`less than 25: ${index + 26}`)
+
       return this.inputLetters[index + 26];
     }
     if (index > 25) {
+     console.log(`more than 25: ${index - 26}`)
+
       return this.inputLetters[index - 26];
     }
   }
@@ -35,24 +41,28 @@ export class Wiring {
 
   applyRingSetting(ringSetting: number) {
     let newWiringString = ""
-    if (ringSetting != 1) {
-        // key, value = key - 1, value + 1
+    this.connectDefaultWiring()
+    if (ringSetting > 0) {
+        // key, value = key  1, value + 1
         for (let letter of this.inputLetters) {
             let letterIndex = this.getInputLetterIndex(letter)!
-            console.log(letterIndex)
-            let letterBeforeInput = this.getInputLetterByIndex(letterIndex - 1)!
+            let letterBeforeInput = this.getInputLetterByIndex(letterIndex - Math.abs(ringSetting))!
             console.log(letterBeforeInput)
             let letterOutcome = this.getOutputFrom(letterBeforeInput, CurrentDirection.FORWARD)
             console.log(letterOutcome)
             let resultIndex = this.getInputLetterIndex(letterOutcome)
-            console.log(resultIndex)
-            let result = this.getInputLetterByIndex(resultIndex + 1)!
+            let result = this.getInputLetterByIndex(resultIndex + (ringSetting))!
             console.log(result)
             newWiringString = newWiringString + result
         }
         console.log(newWiringString)
         this.wiring = this.connectWiring(newWiringString)
     }
+  }
+
+  private connectDefaultWiring() {
+    console.log("default " + this.defaultWiringString)
+    this.wiring = this.connectWiring(this.defaultWiringString)
   }
 
   private generateWiringMap(inputString: string, outputString: string) {
@@ -73,5 +83,14 @@ export class Wiring {
       forward: this.generateWiringMap(this.inputLetters, wiringString),
       reverse: this.generateWiringMap(wiringString, this.inputLetters),
     };
+  }
+
+  private adjustForRingSetting(letterIndex: number, ringSetting: number) {
+    if ((letterIndex - ringSetting) >= 0) {
+        return ringSetting - 1
+    }
+    if ((letterIndex - ringSetting) < 0) {
+        return ringSetting + 1
+    }
   }
 }

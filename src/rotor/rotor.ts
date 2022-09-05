@@ -10,8 +10,8 @@ export class Rotor {
   wiring: Wiring;
   notchOffset: number[];
 
-  ringSetting = 1;
-  step = 1;
+  ringSetting = 0;
+  step = 0;
 
   constructor({ wiring, notchOffset }: RotorConfig) {
     this.wiring = wiring;
@@ -19,8 +19,8 @@ export class Rotor {
   }
 
   possibleRotorSetting(setting: number) {
-    const minRotation = 1;
-    const maxRotation = 26;
+    const minRotation = 0;
+    const maxRotation = 25;
     return setting <= maxRotation && setting >= minRotation;
   }
 
@@ -50,11 +50,11 @@ export class Rotor {
   }
 
   hasHitNotch() {
-    return this.notchOffset.includes(this.step + this.ringSetting - 1);
+    return this.notchOffset.includes(this.step + this.ringSetting);
   }
 
   rotate() {
-    this.possibleRotorSetting(this.step + 1) ? this.step++ : (this.step = 1);
+    this.possibleRotorSetting(this.step + 1) ? this.step++ : (this.step = 0);
   }
 
   input(letter: string, direction: CurrentDirection) {
@@ -69,17 +69,13 @@ export class Rotor {
 
   private adjustInputForStep(input: string) {
     return this.wiring.getInputLetterByIndex(
-      this.wiring.getInputLetterIndex(input) + this.stepToIndex()
+      this.wiring.getInputLetterIndex(input) + this.step
     );
   }
 
   private adjustOutputForStep(output: string) {
     return this.wiring.getInputLetterByIndex(
-      this.wiring.getInputLetterIndex(output) - this.stepToIndex()
+      this.wiring.getInputLetterIndex(output) - this.step
     );
-  }
-
-  private stepToIndex() {
-    return this.step - 1;
   }
 }

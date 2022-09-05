@@ -60,9 +60,9 @@ describe("Rotor Machine", () => {
 
   it("can set the rotation of all rotors", () => {
     expect(rotorMachine.getRingSettings()).toEqual({
-      1: 1,
-      2: 1,
-      3: 1,
+      1: 0,
+      2: 0,
+      3: 0,
     });
 
     rotorMachine.setRingSettings([23, 1, 12]);
@@ -75,7 +75,7 @@ describe("Rotor Machine", () => {
   });
 
   describe("Real Enigma Test", () => {
-    it("returns EWTYX from AAAAA when ringSettings are [0,0,0], starting position is [1,1,1], rotorPositions are [III,II,I]", () => {
+    it("returns EWTYX from AAAAA when ringSettings are [0,0,0], starting position is [0,0,0], rotorPositions are [III,II,I]", () => {
       let rotorIConfig = {
         wiring: new Wiring("EKMFLGDQVZNTOWYHXUSPAIBRCJ"),
         notchOffset: [25],
@@ -115,7 +115,7 @@ describe("Rotor Machine", () => {
       expect(realMachine.input("A")).toEqual("G");
     });
 
-    it("returns BDZOG from AAAAA when ringSettings are [0,0,0], starting position is [1,1,1], rotorPositions are [I,II,III]", () => {
+    it("returns BDZOG from AAAAA when ringSettings are [0,0,0], starting position is [0,0,0], rotorPositions are [I,II,III]", () => {
       let rotorIConfig = {
         wiring: new Wiring("EKMFLGDQVZNTOWYHXUSPAIBRCJ"),
         notchOffset: [25],
@@ -188,7 +188,7 @@ describe("Rotor Machine", () => {
     
           let realMachine = new RotorMachine(realMachineConfig);
 
-          realMachine.setRingSettings([1, 1, 2])
+          realMachine.setRingSettings([0, 0, 1])
     
           expect(realMachine.input("A")).toEqual("U");
           expect(realMachine.input("A")).toEqual("B");
