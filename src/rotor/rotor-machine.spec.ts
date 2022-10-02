@@ -78,19 +78,19 @@ describe("Rotor Machine", () => {
     it("returns EWTYX from AAAAA when ringSettings are [0,0,0], starting position is [0,0,0], rotorPositions are [III,II,I]", () => {
       let rotorIConfig = {
         wiring: new Wiring("EKMFLGDQVZNTOWYHXUSPAIBRCJ"),
-        notchOffset: [25],
+        notchOffset: [16],
       };
       let rotorI = new Rotor(rotorIConfig);
 
       let rotorIIConfig = {
         wiring: new Wiring("AJDKSIRUXBLHWTMCQGZNPYFVOE"),
-        notchOffset: [14],
+        notchOffset: [4],
       };
       let rotorII = new Rotor(rotorIIConfig);
 
       let rotorIIIConfig = {
         wiring: new Wiring("BDFHJLCPRTXVZNYEIWGAKMUSQO"),
-        notchOffset: [4],
+        notchOffset: [21],
       };
       let rotorIII = new Rotor(rotorIIIConfig);
 
