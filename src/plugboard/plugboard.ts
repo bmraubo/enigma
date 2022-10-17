@@ -6,6 +6,9 @@ export class Plugboard {
     }
 
     setDefaultConnections() {
+        /* extract the alphabet into a global variable
+        because I have lost track of how many times 
+        I have had to sing the song in my head */
         let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         let wiring = new Map()
         alphabet.split("").map((letter) => {
@@ -27,6 +30,11 @@ export class Plugboard {
     }
 
     input(inputLetter: string) {
-        return this.wiring.get(inputLetter)
+        try {
+            return this.wiring.get(inputLetter) as string;
+        } catch (e) {
+            throw Error(`Wiring Error: ${e}`)
+        }
+        
     }
 }
