@@ -1,3 +1,4 @@
+import { ALPHABET_ARRAY } from "../global";
 import { Plugboard } from "../plugboard/plugboard";
 import { RotorMachine } from "../rotor/rotor-machine";
 
@@ -22,9 +23,14 @@ export class Enigma {
         // remove spaces
         // how to deal with numbers
         let result: string[] = new Array();
-        inputText.split(" ").map((letter) => {
+        inputText.split("").filter((character) => 
+            {
+                console.log(character)
+                return ALPHABET_ARRAY.includes(character.toUpperCase()) 
+            }
+        ).map(letter => 
             result.push(this.send(letter))
-        })
+        )
         return result.join("")
     }
 }
