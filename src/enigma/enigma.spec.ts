@@ -117,4 +117,17 @@ describe("Enigma tests", () => {
         expect(enigmaObscureWordLengthSpy).toHaveBeenCalled()     
         expect(result).toEqual("AAAA AAAA AAAA AAXX")
     })
+
+    it("when encoding, can obscure messages", () => {
+        const plugboard = new Plugboard()
+        const enigma = new Enigma(rotorMachine, plugboard)
+
+        jest.spyOn(enigma, 'send').mockReturnValue("A")
+        const enigmaObscureWordLengthSpy = jest.spyOn(enigma, 'obscureWordLength')
+
+        const result = enigma.input("AAAAAAAA AAAA AA", Operation.ENCODE, { obscureWordLength: true })
+
+        expect(enigmaObscureWordLengthSpy).toHaveBeenCalled()     
+        expect(result).toEqual("AAAA AAAA AAAA AAAA")
+    })
 })

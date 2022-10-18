@@ -45,7 +45,7 @@ export class Enigma {
         // remove spaces
         // how to deal with numbers
         // let result: string[] = new Array();
-        let thing: string;
+        let resultString: string;
 
         const padTextString = (textString: string) => {
             const desiredLength =
@@ -54,28 +54,51 @@ export class Enigma {
             return textString.padEnd(desiredLength, "X");
         };
 
-        const formatInputString = (inputString: string): string => {
+        const performOperation = (inputString: string): string => {
             let result: string[] = new Array();
             inputString
                 .split("")
-                .filter((character) =>
-                    ALPHABET_ARRAY.includes(character.toUpperCase())
-                )
                 .map(letter => result.push(this.send(letter)))
             return result.join("")
         };
 
-        if (operation == Operation.ENCODE && options.obscureWordLength) {
-            inputText = padTextString(inputText);
+        const prepareInput = (inputString: string): string => {
+            return inputString
+                .split("")
+                .filter((character) =>
+                    ALPHABET_ARRAY.includes(character.toUpperCase())
+                ).join("")
         }
-        thing = formatInputString(inputText);
+
+        /*
+        if options.obscureWordLength
+            - if ENCODE - padText and performOperation (can pad text again, it wont do anything)
+            - if decode - perform operation and pad Text
+        */
+
+        // if (options.obscureWordLength) {
+        //     const processedText = performOperation(padTextString(inputText))
+        //     this.obscureWordLength(processedText, options.textBlockSize || 4);
+        //     return padTextString(processedText)
+        // }
+
+        let preparedInput = prepareInput(inputText)
+        if (operation == Operation.ENCODE && options.obscureWordLength) {
+            console.log(1, preparedInput)
+            preparedInput = padTextString(preparedInput);
+            console.log(2, preparedInput)
+        }
+        resultString = performOperation(preparedInput);
         if (options.obscureWordLength) {
             if (operation == Operation.DECODE) {
-                thing = padTextString(thing);
+                resultString = padTextString(resultString);
             }
-            return this.obscureWordLength(thing, options.textBlockSize || 4);
+            console.log(3, resultString)
+            const thing = this.obscureWordLength(resultString, options.textBlockSize || 4);
+            console.log(4, thing)
+            return thing
         }
-        return thing;
+        return resultString;
     }
 
     obscureWordLength(inputText: string, textBlockSize: number): string {
