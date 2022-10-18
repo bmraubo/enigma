@@ -58,8 +58,8 @@ export class Enigma {
             let result: string[] = new Array();
             inputString
                 .split("")
-                .map(letter => result.push(this.send(letter)))
-            return result.join("")
+                .map((letter) => result.push(this.send(letter)));
+            return result.join("");
         };
 
         const prepareInput = (inputString: string): string => {
@@ -67,8 +67,9 @@ export class Enigma {
                 .split("")
                 .filter((character) =>
                     ALPHABET_ARRAY.includes(character.toUpperCase())
-                ).join("")
-        }
+                )
+                .join("");
+        };
 
         /*
         if options.obscureWordLength
@@ -82,7 +83,7 @@ export class Enigma {
         //     return padTextString(processedText)
         // }
 
-        let preparedInput = prepareInput(inputText)
+        let preparedInput = prepareInput(inputText);
         if (operation == Operation.ENCODE && options.obscureWordLength) {
             preparedInput = padTextString(preparedInput);
         }
@@ -91,7 +92,10 @@ export class Enigma {
             if (operation == Operation.DECODE) {
                 resultString = padTextString(resultString);
             }
-            return this.obscureWordLength(resultString, options.textBlockSize || 4);
+            return this.obscureWordLength(
+                resultString,
+                options.textBlockSize || 4
+            );
         }
         return resultString;
     }
