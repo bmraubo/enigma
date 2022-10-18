@@ -3,7 +3,7 @@ import { Reflector } from "../rotor/reflector";
 import { Rotor } from "../rotor/rotor";
 import { RotorMachine } from "../rotor/rotor-machine";
 import { Wiring } from "../rotor/wiring";
-import { Enigma } from "./enigma";
+import { Enigma, Operation } from "./enigma";
 
 describe("Enigma tests", () => {
     let rotorMachine: RotorMachine;
@@ -63,7 +63,7 @@ describe("Enigma tests", () => {
 
         const enigmaSendSpy = jest.spyOn(enigma, 'send').mockReturnValue("A")
 
-        enigma.input("A")
+        enigma.input("A", Operation.ENCODE)
 
         expect(enigmaSendSpy).toHaveBeenCalledWith("A")
     })
@@ -74,7 +74,7 @@ describe("Enigma tests", () => {
 
         const enigmaSendSpy = jest.spyOn(enigma, 'send').mockReturnValue("A")
 
-        const result = enigma.input("ABCDEFG")
+        const result = enigma.input("ABCDEFG", Operation.ENCODE)
 
         expect(enigmaSendSpy).toHaveBeenCalledTimes(7)
         expect(result).toEqual("AAAAAAA")
@@ -86,9 +86,35 @@ describe("Enigma tests", () => {
 
         const enigmaSendSpy = jest.spyOn(enigma, 'send').mockReturnValue("A")
 
-        const result = enigma.input("A A")
+        const result = enigma.input("A A", Operation.ENCODE)
 
         expect(enigmaSendSpy).toHaveBeenCalledTimes(2)
         expect(result).toEqual("AA")
+    })
+
+    it("can break down encoded message into 4 character groups if the obscure word length setting is true", () => {
+        const plugboard = new Plugboard()
+        const enigma = new Enigma(rotorMachine, plugboard)
+
+        jest.spyOn(enigma, 'send').mockReturnValue("A")
+        const enigmaObscureWordLengthSpy = jest.spyOn(enigma, 'obscureWordLength')
+
+        const result = enigma.input("AAAAAAAA AAAA", Operation.ENCODE, { obscureWordLength: true })
+
+        expect(enigmaObscureWordLengthSpy).toHaveBeenCalled()     
+        expect(result).toEqual("AAAA AAAA AAAA")
+    })
+
+    it("when decoding, can obscure messages of lengths that do not divide by 4 by adding Xs on the end", () => {
+        const plugboard = new Plugboard()
+        const enigma = new Enigma(rotorMachine, plugboard)
+
+        jest.spyOn(enigma, 'send').mockReturnValue("A")
+        const enigmaObscureWordLengthSpy = jest.spyOn(enigma, 'obscureWordLength')
+
+        const result = enigma.input("AAAAAAAA AAAA AA", Operation.DECODE, { obscureWordLength: true })
+
+        expect(enigmaObscureWordLengthSpy).toHaveBeenCalled()     
+        expect(result).toEqual("AAAA AAAA AAAA AAXX")
     })
 })
