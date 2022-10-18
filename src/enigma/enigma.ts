@@ -84,19 +84,14 @@ export class Enigma {
 
         let preparedInput = prepareInput(inputText)
         if (operation == Operation.ENCODE && options.obscureWordLength) {
-            console.log(1, preparedInput)
             preparedInput = padTextString(preparedInput);
-            console.log(2, preparedInput)
         }
         resultString = performOperation(preparedInput);
         if (options.obscureWordLength) {
             if (operation == Operation.DECODE) {
                 resultString = padTextString(resultString);
             }
-            console.log(3, resultString)
-            const thing = this.obscureWordLength(resultString, options.textBlockSize || 4);
-            console.log(4, thing)
-            return thing
+            return this.obscureWordLength(resultString, options.textBlockSize || 4);
         }
         return resultString;
     }
